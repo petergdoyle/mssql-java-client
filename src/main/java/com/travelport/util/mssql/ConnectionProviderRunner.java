@@ -12,14 +12,16 @@ import java.util.Properties;
 
 /**
  *
- * @author peter
+ * @author 
  */
 public class ConnectionProviderRunner {
 
+    private static final String USAGE_MSG = "Usage: java [JVM_OPTION]... -jar target/MSSQLClient-1.0-SNAPSHOT.jar <mssql.properties>";
+    
     public static void main(String[] args) {
 
         if (args.length < 1) {
-            System.out.println("Usage: java [JVM_OPTION]... -jar target/MSSQLClient-1.0-SNAPSHOT.jar mssql.properties");
+            System.out.println(USAGE_MSG);
             System.exit(1);
         }
 
@@ -27,7 +29,7 @@ public class ConnectionProviderRunner {
         File file = new File(mssqlPropsFn);
         if (!file.exists()) {
             System.out.printf("Error: File file specified as %s does not exist. Please supply a valid mssql.properties file name\n", mssqlPropsFn);
-            System.out.printf("Usage: java [JVM_OPTION]... -jar target/MSSQLClient-1.0-SNAPSHOT.jar mssql.properties\n");
+            System.out.println(USAGE_MSG);
             System.exit(1);
         }
 
@@ -38,7 +40,7 @@ public class ConnectionProviderRunner {
             mssqlProps.load(input);
         } catch (Exception ex) {
             System.out.printf("Error: File file specified as %s cannot be opened. Please supply a valid mssql.properties file\n", mssqlPropsFn);
-            System.out.printf("Usage: java [JVM_OPTION]... -jar target/MSSQLClient-1.0-SNAPSHOT.jar mssql.properties\n");
+            System.out.println(USAGE_MSG);
             ex.printStackTrace();
             System.exit(1);
         }
@@ -63,7 +65,7 @@ public class ConnectionProviderRunner {
         if (propertyCount != requiredPropertyCount) {
             System.out.printf("Error: File file specified as %s does not contain %d properties. Please supply a valid mssql.properties file\n", mssqlPropsFn, requiredPropertyCount);
             System.out.printf("Sample Properties\n%s\n\n", samplePropertiesFile);
-            System.out.printf("Usage: java [JVM_OPTION]... -jar target/MSSQLClient-1.0-SNAPSHOT.jar mssql.properties\n");
+            System.out.println(USAGE_MSG);
             System.exit(1);
         }
 

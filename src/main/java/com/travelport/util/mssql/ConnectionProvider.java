@@ -2,14 +2,9 @@
  */
 package com.travelport.util.mssql;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Enumeration;
-import java.util.Properties;
 
 /**
  *
