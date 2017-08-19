@@ -7,8 +7,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -86,6 +84,7 @@ public class ConnectionProviderRunner {
                 mssqlProps.getProperty("mssql.hostNameInCertificate"),
                 mssqlProps.getProperty("mssql.loginTimeout"));
 
+        System.out.println("Program running. Attempting to connect:");
         System.out.printf("jdbc connection string: %s\n", connectionString);
 
         try {
