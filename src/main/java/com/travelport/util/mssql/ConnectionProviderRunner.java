@@ -12,12 +12,12 @@ import java.util.Properties;
 
 /**
  *
- * @author 
+ * @author
  */
 public class ConnectionProviderRunner {
 
-    private static final String USAGE_MSG = "Usage: java [JVM_OPTION]... -jar target/MSSQLClient-1.0-SNAPSHOT.jar <mssql.properties>";
-    
+    private static final String USAGE_MSG = "Usage: java [JVM_OPTION]... -jar target/MSSQLClient-1.0-SNAPSHOT.jar -F<mssql.properties>\nOr to specify the connection string explicitly\njava [JVM_OPTION]... -jar target/MSSQLClient-1.0-SNAPSHOT.jar \"jdbc:sqlserver://yourserver.database.windows.net:1433;...\"";
+
     public static void main(String[] args) {
 
         if (args.length < 1) {
@@ -25,66 +25,74 @@ public class ConnectionProviderRunner {
             System.exit(1);
         }
 
-        String mssqlPropsFn = args[0];
-        File file = new File(mssqlPropsFn);
-        if (!file.exists()) {
-            System.out.printf("Error: File file specified as %s does not exist. Please supply a valid mssql.properties file name\n", mssqlPropsFn);
-            System.out.println(USAGE_MSG);
-            System.exit(1);
-        }
+        String arg0 = args[0];
+        String connectionString;
+        if (arg0.startsWith("-F")) {
+            
+            String fn = arg0.substring("-F".length());
+            
+            File file = new File(fn);
+            if (!file.exists()) {
+                System.out.printf("Error: File file specified as %s does not exist. Please supply a valid mssql.properties file name\n", arg0);
+                System.out.println(USAGE_MSG);
+                System.exit(1);
+            }
 
-        Properties mssqlProps = new Properties();
-        InputStream input;
-        try {
-            input = new FileInputStream(mssqlPropsFn);
-            mssqlProps.load(input);
-        } catch (Exception ex) {
-            System.out.printf("Error: File file specified as %s cannot be opened. Please supply a valid mssql.properties file\n", mssqlPropsFn);
-            System.out.println(USAGE_MSG);
-            ex.printStackTrace();
-            System.exit(1);
-        }
+            Properties mssqlProps = new Properties();
+            InputStream input;
+            try {
+                input = new FileInputStream(fn);
+                mssqlProps.load(input);
+            } catch (Exception ex) {
+                System.out.printf("Error: File file specified as %s cannot be opened. Please supply a valid mssql.properties file\n", arg0);
+                System.out.println(USAGE_MSG);
+                ex.printStackTrace();
+                System.exit(1);
+            }
 
-        Enumeration<?> e = mssqlProps.propertyNames();
-        int requiredPropertyCount = 8;
-        int propertyCount = 0;
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
-            String value = mssqlProps.getProperty(key);
+            Enumeration<?> e = mssqlProps.propertyNames();
+            int requiredPropertyCount = 8;
+            int propertyCount = 0;
+            while (e.hasMoreElements()) {
+                String key = (String) e.nextElement();
+                String value = mssqlProps.getProperty(key);
 //            System.out.printf("%s=%s\n", key, value);
-            propertyCount++;
-        }
-        String samplePropertiesFile = "mssql.uri=jdbc:sqlserver://yourserver.database.windows.net:1433\n"
-                + "mssql.database=AdventureWorks\n"
-                + "mssql.user=yourusername@yourserver\n"
-                + "mssql.password=yourpassword\n"
-                + "mssql.encrypt=true\n"
-                + "mssql.trustServerCertificate=false\n"
-                + "mssql.hostNameInCertificate=*.database.windows.net\n"
-                + "mssql.loginTimeout=30";
-        if (propertyCount != requiredPropertyCount) {
-            System.out.printf("Error: File file specified as %s does not contain %d properties. Please supply a valid mssql.properties file\n", mssqlPropsFn, requiredPropertyCount);
-            System.out.printf("Sample Properties\n%s\n\n", samplePropertiesFile);
-            System.out.println(USAGE_MSG);
-            System.exit(1);
-        }
+                propertyCount++;
+            }
+            String samplePropertiesFile = "mssql.uri=jdbc:sqlserver://yourserver.database.windows.net:1433\n"
+                    + "mssql.database=AdventureWorks\n"
+                    + "mssql.user=yourusername@yourserver\n"
+                    + "mssql.password=yourpassword\n"
+                    + "mssql.encrypt=true\n"
+                    + "mssql.trustServerCertificate=false\n"
+                    + "mssql.hostNameInCertificate=*.database.windows.net\n"
+                    + "mssql.loginTimeout=30";
+            if (propertyCount != requiredPropertyCount) {
+                System.out.printf("Error: File file specified as %s does not contain %d properties. Please supply a valid mssql.properties file\n", arg0, requiredPropertyCount);
+                System.out.printf("Sample Properties\n%s\n\n", samplePropertiesFile);
+                System.out.println(USAGE_MSG);
+                System.exit(1);
+            }
 
-        String connectionString = String.format("%s;"
-                + "database=%s;"
-                + "user=%s;"
-                + "password=%s;"
-                + "encrypt=%s;"
-                + "trustServerCertificate=%s;"
-                + "hostNameInCertificate=%s;"
-                + "loginTimeout=%s;",
-                mssqlProps.getProperty("mssql.uri"),
-                mssqlProps.getProperty("mssql.database"),
-                mssqlProps.getProperty("mssql.user"),
-                mssqlProps.getProperty("mssql.password"),
-                mssqlProps.getProperty("mssql.encrypt"),
-                mssqlProps.getProperty("mssql.trustServerCertificate"),
-                mssqlProps.getProperty("mssql.hostNameInCertificate"),
-                mssqlProps.getProperty("mssql.loginTimeout"));
+            connectionString = String.format("%s;"
+                    + "database=%s;"
+                    + "user=%s;"
+                    + "password=%s;"
+                    + "encrypt=%s;"
+                    + "trustServerCertificate=%s;"
+                    + "hostNameInCertificate=%s;"
+                    + "loginTimeout=%s;",
+                    mssqlProps.getProperty("mssql.uri"),
+                    mssqlProps.getProperty("mssql.database"),
+                    mssqlProps.getProperty("mssql.user"),
+                    mssqlProps.getProperty("mssql.password"),
+                    mssqlProps.getProperty("mssql.encrypt"),
+                    mssqlProps.getProperty("mssql.trustServerCertificate"),
+                    mssqlProps.getProperty("mssql.hostNameInCertificate"),
+                    mssqlProps.getProperty("mssql.loginTimeout"));
+        } else {
+            connectionString = arg0;
+        }
 
         System.out.println("Program running. Attempting to connect:");
         System.out.printf("jdbc connection string: %s\n", connectionString);
