@@ -6,12 +6,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -49,11 +48,10 @@ public class ConnectionProviderRunner {
         Enumeration<?> e = mssqlProps.propertyNames();
         int requiredPropertyCount = 8;
         int propertyCount = 0;
-        System.out.println("Connecting with the following driver properties:");
         while (e.hasMoreElements()) {
             String key = (String) e.nextElement();
             String value = mssqlProps.getProperty(key);
-            System.out.printf("%s=%s\n", key, value);
+//            System.out.printf("%s=%s\n", key, value);
             propertyCount++;
         }
         String samplePropertiesFile = "mssql.uri=jdbc:sqlserver://yourserver.database.windows.net:1433\n"
@@ -87,6 +85,8 @@ public class ConnectionProviderRunner {
                 mssqlProps.getProperty("mssql.trustServerCertificate"),
                 mssqlProps.getProperty("mssql.hostNameInCertificate"),
                 mssqlProps.getProperty("mssql.loginTimeout"));
+
+        System.out.printf("jdbc connection string: %s\n", connectionString);
 
         try {
             Connection connection = new ConnectionProvider(connectionString).connect();
