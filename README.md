@@ -122,6 +122,7 @@ com.microsoft.sqlserver.jdbc.SQLServerException: Login failed for user 'youruser
 	at com.travelport.util.mssql.ConnectionProviderRunner.main(ConnectionProviderRunner.java:101)
 ```
 
+#### Successes 
 If you connect successfully you should see something like this
 ```
 Program running. Attempting to connect:
