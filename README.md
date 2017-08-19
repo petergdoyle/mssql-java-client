@@ -44,6 +44,17 @@ OpenJDK 64-Bit Server VM (build 25.141-b16, mixed mode)
 
 ### Build the Code
 
+- clone the repository 
+```
+$ git clone https://github.com/petergdoyle/mssql-java-client.git
+```
+- build with maven
+```
+$ cd mssql-java-client
+$ mvn clean install 
+```
+- run it as outlined in next section
+
 ### Run the Code
 
 The code will attempt to make a connection to the mssql database using a default jdbc-connection string that is built by either reading a properties file you provide OR you can provide the jdbc connection string you provide. 
