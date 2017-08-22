@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo -e "Sample Jdbc Connection String"
-echo -e "jdbc connection string: jdbc:sqlserver://yourserver.database.windows.net:1433;database=AdventureWorks;user=yourusername@yourserver;password=yourpassword;encrypt=true;trustServerCertificate=true ;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
+echo -e "jdbc:sqlserver://yourserver.database.windows.net:1433;database=AdventureWorks;user=yourusername@yourserver;password=yourpassword;encrypt=true;trustServerCertificate=true ;hostNameInCertificate=*.database.windows.net;loginTimeout=30;"
 echo -e ""
 echo -e ""
 
