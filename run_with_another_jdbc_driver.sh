@@ -11,6 +11,6 @@ done
 . ./get_jdbc_connection_string.sh
 
 classpath=".:"$jdbc_jar_file":target/MSSQLClient-1.0-SNAPSHOT.jar"
-cmd="java -cp $classpath com.travelport.util.mssql.ConnectionProviderRunner $jdbc_connection_string"
+cmd="java -cp $classpath com.travelport.util.mssql.ConnectionProviderRunner \"$jdbc_connection_string\""
 echo "$cmd"
 eval "$cmd"
